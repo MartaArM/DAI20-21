@@ -1,0 +1,1 @@
+docker-compose run contenedor python hola.py
