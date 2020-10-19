@@ -2,8 +2,10 @@
 from flask import Flask
 from time import time
 import math
+import random
+import logging
 
-app = Flask(__name__)
+app = Flask(__name__);
 
 #Devuelve el máximo valor de una lista
 #Se utiliza en ordenacion_seleccion
@@ -65,6 +67,44 @@ def ordenacion_insercion(lista):
 
 		lista_aux[pos]=valor;
 	return lista_aux;
+
+#Comprueba si una cadena de "[" y "]" está balanceada
+def cadenaBalanceada(cadena):
+	cadena_aux = cadena.split();
+	balanceada = True;
+	i = 0;
+
+	info = "";
+
+	while i < len(cadena_aux) and balanceada == True:
+		simbolo = cadena_aux[i];
+		cadena_aux.pop(i);
+		j = 0;
+		
+		hay_corchete = False;
+		if simbolo == "]":
+			while j < len(cadena_aux) and hay_corchete == False:
+				print(cadena_aux + "-");
+				if cadena_aux[j] == "[":
+					cadena_aux.pop(j);
+					hay_corchete = True;
+				else:
+					j = j+1;
+		elif simbolo == "[":
+			while j < len(cadena_aux) and hay_corchete == False:
+				if cadena_aux[j] == "]":
+					cadena_aux.pop(j);
+					hay_corchete = True;
+				else:
+					j = j+1;
+
+		if len(cadena_aux) != 0:
+			balanceada = False;
+
+	
+	return balanceada;
+
+
 
 
 @app.route('/')
@@ -157,7 +197,27 @@ def fibonacci_flask():
 	if contenido != '':
 		num = int(contenido)
 		with open(nombre_escritura, "w") as archivo:
-			archivo.write("El valor " + contenido + " de la sucesión de Fibonacci de " + contenido + " es " + str(fibonacci(num-1)));
+			archivo.write("El valor " + contenido + " de la sucesión de Fibonacci de " + contenido + 
+				" es " + str(fibonacci(num-1)));
 		return "Archivo completo";
 	else:
 		return "No hay ningún número en " + nombre_archivo;
+
+@app.route('/cadena')
+def cadena():
+	tam_cadena = random.randint(0,10);
+	cadena = "";
+	# Generación de cadena aleatoria con "[" o "]"
+	for i in range(1, tam_cadena):
+		valor = random.randint(0, 10)
+		if valor % 2 == 0:
+			cadena = cadena + "[";
+		else:
+			cadena = cadena + "]";
+
+	devolver = cadena;
+	if cadenaBalanceada(cadena) == True:
+		devolver = devolver + " - " + "Cadena balanceada";
+	else:
+		devolver = devolver + " - " + "Cadena NO balanceada";
+	return devolver;
