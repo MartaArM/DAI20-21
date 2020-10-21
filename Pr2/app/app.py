@@ -70,11 +70,14 @@ def ordenacion_insercion(lista):
 
 #Comprueba si una cadena de "[" y "]" está balanceada
 def cadenaBalanceada(cadena):
-	cadena_aux = cadena.split();
+	cadena_aux = list();
+	for val in cadena:
+		cadena_aux.append(val);
+	cad = "";
+
 	balanceada = True;
 	i = 0;
-
-	info = "";
+	hay_corchete = False;
 
 	while i < len(cadena_aux) and balanceada == True:
 		simbolo = cadena_aux[i];
@@ -82,28 +85,23 @@ def cadenaBalanceada(cadena):
 		j = 0;
 		
 		hay_corchete = False;
-		if simbolo == "]":
-			while j < len(cadena_aux) and hay_corchete == False:
-				print(cadena_aux + "-");
-				if cadena_aux[j] == "[":
-					cadena_aux.pop(j);
-					hay_corchete = True;
-				else:
-					j = j+1;
-		elif simbolo == "[":
+		if simbolo == "[":
 			while j < len(cadena_aux) and hay_corchete == False:
 				if cadena_aux[j] == "]":
 					cadena_aux.pop(j);
 					hay_corchete = True;
+					cad = cad + "entra1";
 				else:
 					j = j+1;
-
-		if len(cadena_aux) != 0:
+					cad = cad + "entra2";
+		else:
 			balanceada = False;
+
+	if len(cadena_aux) != 0 or hay_corchete == False:
+		balanceada = False;
 
 	
 	return balanceada;
-
 
 
 
@@ -205,7 +203,7 @@ def fibonacci_flask():
 
 @app.route('/cadena')
 def cadena():
-	tam_cadena = random.randint(0,10);
+	tam_cadena = random.randint(1,10);
 	cadena = "";
 	# Generación de cadena aleatoria con "[" o "]"
 	for i in range(1, tam_cadena):
@@ -214,10 +212,15 @@ def cadena():
 			cadena = cadena + "[";
 		else:
 			cadena = cadena + "]";
-
 	devolver = cadena;
+	
 	if cadenaBalanceada(cadena) == True:
 		devolver = devolver + " - " + "Cadena balanceada";
 	else:
 		devolver = devolver + " - " + "Cadena NO balanceada";
 	return devolver;
+	#return cadenaBalanceada(cadena);
+
+	@app.errorhandler(404)
+def page_not_found(e):
+    return "Error 404: página no encontrada";
