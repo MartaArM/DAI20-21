@@ -4,11 +4,13 @@ from time import time
 import math
 import random
 import logging
+import re
 
 app = Flask(__name__);
 
 #Devuelve el máximo valor de una lista
 #Se utiliza en ordenacion_seleccion
+#Ejercicio 2
 def buscar_max(lista, ini, fin):
 	p_max = ini;
 	for i in range(ini+1, fin+1):
@@ -16,13 +18,9 @@ def buscar_max(lista, ini, fin):
 					p_max = i
 	return p_max
 
-#Función de Fibonacci
-def fibonacci(n):
-	if n < 2:
-		return n
-	else:
-		return fibonacci(n-1)+fibonacci(n-2)
 
+
+#Ejercicio 2
 def ordenacion_burbuja(lista):
 	num = len(lista);
 	lista_aux = lista;
@@ -38,6 +36,7 @@ def ordenacion_burbuja(lista):
 		i = i + 1;
 	return lista_aux;
 
+#Ejercicio 2
 def ordenacion_seleccion(lista):
 	num = len(lista) - 1;
 	lista_aux = lista;
@@ -52,6 +51,7 @@ def ordenacion_seleccion(lista):
 
 #Mantiene siempre una sublista ordenada al principio de la lista.
 #Va añadiendo un item nuevo al final y ordena la sublista del principio
+#Ejercicio 2
 def ordenacion_insercion(lista):
 	lista_aux = lista;
 
@@ -68,7 +68,16 @@ def ordenacion_insercion(lista):
 		lista_aux[pos]=valor;
 	return lista_aux;
 
+#Función de Fibonacci
+#Ejercicio 3
+def fibonacci(n):
+	if n < 2:
+		return n
+	else:
+		return fibonacci(n-1)+fibonacci(n-2)
+
 #Comprueba si una cadena de "[" y "]" está balanceada
+#Ejercicio 5
 def cadenaBalanceada(cadena):
 	cadena_aux = list();
 	for val in cadena:
@@ -109,6 +118,7 @@ def cadenaBalanceada(cadena):
 def hello_world():
  return 'Esta es la página principal'
 
+#Ejercicio 2
 @app.route('/ordenar/<lista>')
 def ordenar(lista):
 	lista2 = list();
@@ -152,6 +162,7 @@ def ordenar(lista):
 
 	return string_dev;
 
+#Ejercicio 3
 @app.route('/criba/<valor>')
 def criba_erastotenes(valor):
 	num = int(valor);
@@ -182,7 +193,7 @@ def criba_erastotenes(valor):
 	return string_dev;
 
 
-
+#Ejercicio 4
 @app.route('/fibonacci')
 def fibonacci_flask():
 
@@ -201,6 +212,7 @@ def fibonacci_flask():
 	else:
 		return "No hay ningún número en " + nombre_archivo;
 
+#Ejercicio 5
 @app.route('/cadena')
 def cadena():
 	tam_cadena = random.randint(1,10);
@@ -218,9 +230,24 @@ def cadena():
 		devolver = devolver + " - " + "Cadena balanceada";
 	else:
 		devolver = devolver + " - " + "Cadena NO balanceada";
-	return devolver;
-	#return cadenaBalanceada(cadena);
 
-	@app.errorhandler(404)
+	return devolver;
+
+#Ejercicio 6.1
+@app.route('/ex_mayusculas/<cadena>')
+def ex_mayusculas(cadena):
+	return str(re.findall('[a-zA-Z]+\s[A-Z]{1}?',cadena));
+
+#Ejercicio 6.2
+@app.route('/ex_correo/<cadena>')
+def ex_correo(cadena):
+	patron = re.compile(r"[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,6}")
+
+	if patron.search(cadena): # Comprobemos sí este es un correo electronico valido
+		return "Correo valido";
+	else:
+		return "Correo no válido";
+
+@app.errorhandler(404)
 def page_not_found(e):
-    return "Error 404: página no encontrada";
+	return "Error 404: página no encontrada";
