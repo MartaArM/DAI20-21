@@ -228,14 +228,12 @@ def ex_mayusculas(cadena):
 #Ejercicio 6.2
 @app.route('/ex_correo/<cadena>')
 def ex_correo(cadena):
-	#patron = re.compile(r"[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,6}")
-	patron = re.compile(r"[\w[^()<>@,;:[]ç%&]]");
+	patron = re.compile(r"[\w.%+-_\.]+@[\w]+\.[a-zA-Z][^\.]");
 
-	return str(re.findall(patron, cadena));
-	# if patron.search(cadena): # Comprobemos sí este es un correo electronico valido
-	# 	return "Correo valido";
-	# else:
-	# 	return "Correo no válido";
+	if patron.search(cadena): # Comprobemos sí este es un correo electronico valido
+		return "Correo valido";
+	else:
+		return "Correo no válido";
 
 @app.errorhandler(404)
 def page_not_found(e):
