@@ -194,23 +194,10 @@ def criba_erastotenes(valor):
 
 
 #Ejercicio 4
-@app.route('/fibonacci')
+@app.route('/fibonacci/<numero>')
 def fibonacci_flask():
-
-	nombre_archivo = "./textos/ejercicio4.txt";
-	nombre_escritura = "./textos/ejercicio4_return.txt"
-	# Leer de un archivo
-	with open(nombre_archivo, "r") as archivo:
-	    contenido = archivo.read();
-
-	if contenido != '':
-		num = int(contenido)
-		with open(nombre_escritura, "w") as archivo:
-			archivo.write("El valor " + contenido + " de la sucesión de Fibonacci de " + contenido + 
-				" es " + str(fibonacci(num-1)));
-		return "Archivo completo";
-	else:
-		return "No hay ningún número en " + nombre_archivo;
+	num = int(numero);
+	return "El valor " + contenido + " de la sucesión de Fibonacci de " + contenido + " es " + str(fibonacci(num-1));
 
 #Ejercicio 5
 @app.route('/cadena')
