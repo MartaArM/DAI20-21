@@ -1,5 +1,5 @@
 #./app/app.py
-from flask import Flask
+from flask import Flask, render_template
 from time import time
 import math
 import random
@@ -252,8 +252,37 @@ def ex_tarjeta(cadena):
 	#patron = re.compile("\d{4}?[\s-]\d{4}?[\s-]\d{4}?[\s-]\d{4}?$");
 	return str(re.findall(patron,cadena));
 
-#Ejercicio para nota
 
 @app.errorhandler(404)
 def page_not_found(e):
 	return "Error 404: página no encontrada";
+
+#Ejercicio para nota
+
+#Desarrolle una aplicación web sencilla que nos permita crear una imagen SVG dinámica (que cambie 
+#cada vez que visitemos la página) y aleatoria. 
+@app.route('/svg')
+def svg():
+	formas=['circle', 'rect', 'ellipse'];
+	colores=['black', 'blue', 'red', 'green', 'yellow', 'orange', 'purple'];
+
+	centro = 100;
+	tam = 60;
+	tam2 = 90;
+
+	forma = random.choice(formas);
+	color = random.choice(colores);
+	color_relleno = random.choice(colores);
+
+	figura=forma;
+
+	if forma=='circle':
+		figura=figura+' cx='+str(centro)+' cy='+str(centro)+' r='+str(tam);
+	elif forma=='rect':
+		figura=figura+' x='+str(centro-tam)+' y='+str(centro-tam)+' width='+str(tam*2)+' height='+str(tam*2);
+	elif forma=='ellipse':
+		figura=figura+' cx='+str(centro)+' cy='+str(centro)+' rx='+str(tam)+' ry='+str(tam2);
+
+	figura=figura+' stroke='+color+' fill='+color_relleno
+
+	return render_template('figura_svg.html', forma=figura)
