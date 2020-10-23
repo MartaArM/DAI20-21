@@ -195,9 +195,9 @@ def criba_erastotenes(valor):
 
 #Ejercicio 4
 @app.route('/fibonacci/<numero>')
-def fibonacci_flask():
+def fibonacci_flask(numero):
 	num = int(numero);
-	return "El valor " + contenido + " de la sucesión de Fibonacci de " + contenido + " es " + str(fibonacci(num-1));
+	return "El valor " + numero + " de la sucesión de Fibonacci de " + numero + " es " + str(fibonacci(num-1));
 
 #Ejercicio 5
 @app.route('/cadena')
