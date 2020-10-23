@@ -237,7 +237,7 @@ def ex_mayusculas(cadena):
 #Identificar correos electrónicos válidos
 @app.route('/ex_correo/<cadena>')
 def ex_correo(cadena):
-	patron = re.compile(r"[\w.%+-_\.]+@[\w]+\.[a-zA-Z][^\.]");
+	patron = re.compile(r"[\w.%+-_\.]+@[\w]+\.[a-zA-Z]");
 
 	if patron.search(cadena): # Comprobemos sí este es un correo electronico valido
 		return "Correo valido";
