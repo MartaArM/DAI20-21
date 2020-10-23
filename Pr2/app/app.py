@@ -119,6 +119,8 @@ def hello_world():
  return 'Esta es la página principal'
 
 #Ejercicio 2
+#Programe un par de funciones de ordenación de matrices de números distintas. Realice un programa que genere aleatoriamente 
+# matrices de números aleatorios y use dicho métodos para comparar el tiempo que tardan en ejecutarse.
 @app.route('/ordenar/<lista>')
 def ordenar(lista):
 	lista2 = list();
@@ -163,6 +165,8 @@ def ordenar(lista):
 	return string_dev;
 
 #Ejercicio 3
+#La Criba de Eratóstenes es un sencillo algoritmo que permite encontrar
+# todos los números primos menores de un número natural dado. Prográmelo.
 @app.route('/criba/<valor>')
 def criba_erastotenes(valor):
 	num = int(valor);
@@ -194,12 +198,14 @@ def criba_erastotenes(valor):
 
 
 #Ejercicio 4
+#Cree un programa que lea un número entero n y escriba el n-ésimo número de la sucesión de Fibonacci.
 @app.route('/fibonacci/<numero>')
 def fibonacci_flask(numero):
 	num = int(numero);
 	return "El valor " + numero + " de la sucesión de Fibonacci de " + numero + " es " + str(fibonacci(num-1));
 
 #Ejercicio 5
+#Cree un programa que genere una cadena aleatoria de "[" y "]" y compruebe si está balanceada
 @app.route('/cadena')
 def cadena():
 	tam_cadena = random.randint(1,10);
@@ -221,12 +227,14 @@ def cadena():
 	return devolver;
 
 #Ejercicio 6.1
+#Identificar cualquier palabra seguida de un espacio y una única letra mayúscula
 @app.route('/ex_mayusculas/<cadena>')
 def ex_mayusculas(cadena):
 	patron = re.compile("([a-zA-Z]+\s[A-Z]{1}?$)|([a-zA-Z]+\s[A-Z]{1}?\s)");
 	return str(re.findall(patron,cadena));
 
 #Ejercicio 6.2
+#Identificar correos electrónicos válidos
 @app.route('/ex_correo/<cadena>')
 def ex_correo(cadena):
 	patron = re.compile(r"[\w.%+-_\.]+@[\w]+\.[a-zA-Z][^\.]");
@@ -237,11 +245,14 @@ def ex_correo(cadena):
 		return "Correo no válido";
 
 #Ejercicio 6.3
+#Identificar números de tarjeta de crédito cuyos dígitos estén separados por - o espacios en blanco cada paquete de cuatro dígitos
 @app.route('/ex_tarjeta/<cadena>')
 def ex_tarjeta(cadena):
 	patron = re.compile("(\d{4}?-\d{4}?-\d{4}?-\d{4}?$)|(\d{4}?\s\d{4}?\s\d{4}?\s\d{4}?$)");
 	#patron = re.compile("\d{4}?[\s-]\d{4}?[\s-]\d{4}?[\s-]\d{4}?$");
 	return str(re.findall(patron,cadena));
+
+#Ejercicio para nota
 
 @app.errorhandler(404)
 def page_not_found(e):
