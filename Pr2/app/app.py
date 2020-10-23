@@ -223,7 +223,8 @@ def cadena():
 #Ejercicio 6.1
 @app.route('/ex_mayusculas/<cadena>')
 def ex_mayusculas(cadena):
-	return str(re.findall('([a-zA-Z]+\s[A-Z]{1}?$)|([a-zA-Z]+\s[A-Z]{1}?\s)',cadena));
+	patron = re.compile("([a-zA-Z]+\s[A-Z]{1}?$)|([a-zA-Z]+\s[A-Z]{1}?\s)");
+	return str(re.findall(patron,cadena));
 
 #Ejercicio 6.2
 @app.route('/ex_correo/<cadena>')
@@ -234,6 +235,12 @@ def ex_correo(cadena):
 		return "Correo valido";
 	else:
 		return "Correo no válido";
+
+#Ejercicio 6.3
+@app.route('/ex_tarjeta/<cadena>')
+def ex_tarjeta(cadena):
+	return "hola";
+	#return str(re.findall)
 
 @app.errorhandler(404)
 def page_not_found(e):
