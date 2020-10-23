@@ -239,8 +239,9 @@ def ex_correo(cadena):
 #Ejercicio 6.3
 @app.route('/ex_tarjeta/<cadena>')
 def ex_tarjeta(cadena):
-	return "hola";
-	#return str(re.findall)
+	patron = re.compile("(\d{4}?-\d{4}?-\d{4}?-\d{4}?$)|(\d{4}?\s\d{4}?\s\d{4}?\s\d{4}?$)");
+	#patron = re.compile("\d{4}?[\s-]\d{4}?[\s-]\d{4}?[\s-]\d{4}?$");
+	return str(re.findall(patron,cadena));
 
 @app.errorhandler(404)
 def page_not_found(e):
