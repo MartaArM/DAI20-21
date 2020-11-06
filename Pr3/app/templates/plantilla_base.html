@@ -32,9 +32,15 @@
             }
             /*-------*/
 
+            /*Formulario de registro*/
+            .register_form {
+                padding-bottom: 22%;
+                width: 40%;
+            }
+
             /*Menú lateral*/
             #menu_lateral {
-                background-color: #99ffe6;
+                background-color: #d9b3ff;
                 overflow-x: hidden; 
                 padding:2%;
                 width: 15%;
@@ -63,6 +69,11 @@
                 width: 80%;
             }
             /*-------*/
+
+            /*Mensaje login*/
+            #bienvenidx {
+                padding-right: 1%;
+            }
         </style>
 	</head>
 	<body>
@@ -84,31 +95,37 @@
                     <a class="nav-link" href="{{ url_for('pagina_prueba') }}">Prueba</a>
 	           </li>
 	       </ul>
-            	<form class="login_form">
-                    <div class="row">
-                        <div class="col" >
-                            <input type="text" class="form-control" id="user_login" placeholder="Usuario">
-                        </div>
-                        <div class="col">
-                            <input type="password" class="form-control" placeholder="Clave">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+           {% if login == "false": %}
+        	<form class="login_form" method="post" action="\login">
+                <div class="row">
+                    <div class="col" >
+                        <input type="text" class="form-control" name="username" placeholder="Usuario">
                     </div>
-                </form>
+                    <div class="col">
+                        <input type="password" class="form-control" name="password" placeholder="Clave">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+                </div>
+            </form>
+            <form method="post" action="\register_data">
+                <button type="submit" class="btn btn-primary">Registrarse</button>
+            </form>
+            {% else %}
+            <div id='bienvenidx'> Bienvenid@, {{ nombre_us }} </div>
+            <form method="post" action="\unlogin">
+                <button type="submit" class="btn btn-primary">Cerrar sesión</button>
+            </form>
+            
+            {% endif %}
         </div>
     </nav>
     <!-- Fin barra de navegación -->
     <!-- Menú lateral -->
-    <!-- <div id="mySidenav" class="sidenav">
-        <a href="#">About</a>
-        <a href="#">Services</a>
-        <a href="#">Clients</a>
-        <a href="#">Contact</a>
-    </div> -->
     <div class="container">
       <div class="row">
         <div class="col-" id="menu_lateral">
           <a href="{{ url_for('pagina_inicio') }}">Página de inicio</a>
+          <a href="{{ url_for('pagina_prueba') }}">Página de prueba</a>
         </div>
         <div class="col" id="contenido">
           {% block content %}{% endblock %}
