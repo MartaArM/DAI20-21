@@ -26,9 +26,11 @@ def login():
 	username = request.form['username'];
 
 	users = User.query.all();
+	saved_user = True;
 
 	for user in users:
 		
+
 	if password == '12345' and username == 'marta':
 		session['logged_in'] = True;
 		return render_template('inicio.html', login='true', nombre_us=username);
