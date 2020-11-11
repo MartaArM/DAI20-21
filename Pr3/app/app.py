@@ -1,16 +1,25 @@
 from flask import Flask, render_template, session, request;
 from flask_sqlalchemy import SQLAlchemy;
-from static import database;
+import config
+from models import Users, db
 
 app = Flask(__name__);
-app.secret_key = "&LVKaB}fK(EqR";
+app.config.from_object(config)
+app.secret_key = config.secret_key
 
+db.init_app(app);
 
+@app.before_first_request
+def create_tables():
+	db.create_all()
 
 @app.route('/')
 def pagina_inicio():
-	if session['logged_in'] == True:
-		return render_template('inicio.html', login='true');
+	if 'logged_in' in session:
+		if session['logged_in'] == True:
+			return render_template('inicio.html', login='true');
+		else:
+			return render_template('inicio.html', login='false');
 	else:
 		return render_template('inicio.html', login='false');
 
@@ -25,15 +34,20 @@ def login():
 	password = request.form['password'];
 	username = request.form['username'];
 
-	users = User.query.all();
-	saved_user = True;
+	users = Users.query.all();
+	saved_user = False;
 
 	for user in users:
-		
+		if user.username == username:
+			saved_user = True;
+			clave = user.password;
 
-	if password == '12345' and username == 'marta':
-		session['logged_in'] = True;
-		return render_template('inicio.html', login='true', nombre_us=username);
+	if saved_user == True:
+		if clave == password:
+			session['logged_in'] = True;
+			return render_template('inicio.html', login='true', nombre_us=username);
+		else:
+			return render_template('inicio.html', login='false');
 	else:
 		return render_template('inicio.html', login='false');
 	
@@ -53,14 +67,12 @@ def register():
 
 @app.route('/register_data', methods=["GET", "POST"])
 def register_data():
+	password = request.form['r_password'];
+	username = request.form['r_user'];
 
-	password = request.form['password'];
-	username = request.form['username'];
-
-	user = User(username=username, password=password);
+	user = Users(username=username, password=password);
 	db.session.add(user);
 	db.session.commit();
-	return pepe;
-	# return render_template('registro_usuario.html', login='false');
+	return render_template('registro_usuario.html', login='false');
 
 
