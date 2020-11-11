@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, request;
+from flask import Flask, render_template, session, request, redirect, url_for;
 from flask_sqlalchemy import SQLAlchemy;
 import config
 from models import Users, db
@@ -17,7 +17,7 @@ def create_tables():
 def pagina_inicio():
 	if 'logged_in' in session:
 		if session['logged_in'] == True:
-			return render_template('inicio.html', login='true');
+			return render_template('inicio.html', login='true', nombre_us=session['user_login']);
 		else:
 			return render_template('inicio.html', login='false');
 	else:
@@ -27,7 +27,13 @@ def pagina_inicio():
 
 @app.route('/prueba')
 def pagina_prueba():
-	return render_template('pagina_prueba.html')
+	if 'logged_in' in session:
+		if session['logged_in'] == True:
+			return render_template('pagina_prueba.html', login='true', nombre_us=session['user_login']);
+		else:
+			return render_template('pagina_prueba.html', login='false');
+	else:
+		return render_template('pagina_prueba.html', login='false');
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -45,11 +51,13 @@ def login():
 	if saved_user == True:
 		if clave == password:
 			session['logged_in'] = True;
-			return render_template('inicio.html', login='true', nombre_us=username);
+			session['user_login'] = username;
+			return redirect(url_for('pagina_inicio'))
+
 		else:
-			return render_template('inicio.html', login='false');
+			return redirect(url_for('pagina_inicio'))
 	else:
-		return render_template('inicio.html', login='false');
+		return redirect(url_for('pagina_inicio'))
 	
 @app.route('/unlogin', methods=["GET", "POST"])
 def unlogin():
@@ -70,9 +78,28 @@ def register_data():
 	password = request.form['r_password'];
 	username = request.form['r_user'];
 
-	user = Users(username=username, password=password);
-	db.session.add(user);
-	db.session.commit();
-	return render_template('registro_usuario.html', login='false');
+	saved_user = False;
+	users = Users.query.all();
 
+	for user in users:
+		if user.username == username:
+			saved_user = True;
+
+	if saved_user == True:
+		return render_template('registro_usuario.html', login='false', usuario='existe');
+	else:
+		user = Users(username=username, password=password);
+		db.session.add(user);
+		db.session.commit();
+		return render_template('registro_usuario.html', login='false', usuario='no existe');
+
+@app.route('/ejercicio1', methods=["GET", "POST"])
+def ejercicio1():
+	if 'logged_in' in session:
+		if session['logged_in'] == True:
+			return render_template('ejercicio1.html', login='true', nombre_us=session['user_login']);
+		else:
+			return render_template('ejercicio1.html', login='false');
+	else:
+		return render_template('ejercicio1.html', login='false');
 

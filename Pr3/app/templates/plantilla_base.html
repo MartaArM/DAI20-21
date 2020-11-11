@@ -34,9 +34,21 @@
 
             /*Formulario de registro*/
             .register_form {
-                padding-bottom: 22%;
+                
                 width: 40%;
             }
+
+            .warning-reg {
+                padding-bottom: 22%;
+
+            }
+            #msg-red {
+                color: red;
+            }
+            #msg-green {
+                color: green;
+            }
+
 
             /*Menú lateral*/
             #menu_lateral {
@@ -94,6 +106,9 @@
 	           <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('pagina_prueba') }}">Prueba</a>
 	           </li>
+               <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('ejercicio1') }}">Ejercicio 1</a>
+               </li>
 	       </ul>
            {% if login == "false": %}
         	<form class="login_form" method="post" action="\login">
@@ -115,7 +130,7 @@
             <form method="post" action="\unlogin">
                 <button type="submit" class="btn btn-primary">Cerrar sesión</button>
             </form>
-            
+
             {% endif %}
         </div>
     </nav>
@@ -125,7 +140,10 @@
       <div class="row">
         <div class="col-" id="menu_lateral">
           <a href="{{ url_for('pagina_inicio') }}">Página de inicio</a>
+          <br/>
           <a href="{{ url_for('pagina_prueba') }}">Página de prueba</a>
+          <br/>
+          <a href="{{ url_for('ejercicio1') }}">Ejercicio 1</a>
         </div>
         <div class="col" id="contenido">
           {% block content %}{% endblock %}
