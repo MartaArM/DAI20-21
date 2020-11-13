@@ -16,11 +16,8 @@ def create_tables():
 
 @app.route('/')
 def pagina_inicio():
-	if 'logged_in' in session:
-		if session['logged_in'] == True:
+	if 'logged_in' in session and session['logged_in'] == True:
 			return render_template('inicio.html', login='true', nombre_us=session['user_login']);
-		else:
-			return render_template('inicio.html', login='false');
 	else:
 		return render_template('inicio.html', login='false');
 
@@ -28,11 +25,8 @@ def pagina_inicio():
 
 @app.route('/prueba')
 def pagina_prueba():
-	if 'logged_in' in session:
-		if session['logged_in'] == True:
+	if 'logged_in' in session and session['logged_in'] == True:
 			return render_template('pagina_prueba.html', login='true', nombre_us=session['user_login']);
-		else:
-			return render_template('pagina_prueba.html', login='false');
 	else:
 		return render_template('pagina_prueba.html', login='false');
 
@@ -49,16 +43,12 @@ def login():
 			saved_user = True;
 			clave = user.password;
 
-	if saved_user == True:
-		if clave == password:
+	if saved_user == True and clave == password:
 			session['logged_in'] = True;
 			session['user_login'] = username;
-			return redirect(url_for('pagina_inicio'))
+			session['user_password'] = password;
 
-		else:
-			return redirect(url_for('pagina_inicio'))
-	else:
-		return redirect(url_for('pagina_inicio'))
+	return redirect(url_for('pagina_inicio'))
 	
 @app.route('/unlogin', methods=["GET", "POST"])
 def unlogin():
@@ -81,18 +71,21 @@ def register_data():
 
 	saved_user = False;
 	users = Users.query.all();
+	usuario = "";
 
 	for user in users:
 		if user.username == username:
 			saved_user = True;
 
 	if saved_user == True:
-		return render_template('registro_usuario.html', login='false', usuario='existe');
+		usuario = "existe"
 	else:
 		user = Users(username=username, password=password);
 		db.session.add(user);
 		db.session.commit();
-		return render_template('registro_usuario.html', login='false', usuario='no existe');
+		usuario = "no existe"
+	return render_template('registro_usuario.html', login='false', usuario=usuario);
+		
 
 @app.route('/ejercicio1', methods=["GET", "POST"])
 def ejercicio1():
@@ -126,3 +119,8 @@ def resolver_ej1():
 		return render_template('ejercicio1.html', login='false', opcion=opcion);
 
 
+@app.route('/ver_usuario')
+def ver_usuario():
+	user = session['user_login'];
+	password = session['password'];
+	return render_template('ver_usuario.html', user=user, password=password);
