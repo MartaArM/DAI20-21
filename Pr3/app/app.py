@@ -124,3 +124,21 @@ def ver_usuario():
 	user = session['user_login'];
 	password = session['user_password'];
 	return render_template('ver_usuario.html', user=user, password=password, login='true');
+
+@app.route('/editar_usuario', methods=["GET", "POST"])
+def editar_usuario():
+	user = session['user_login'];
+	password = session['user_password'];
+	return render_template('editar_usuario.html', user=user, login='true');
+
+@app.route('/edit_data', methods=["GET", "POST"])
+def edit_data():
+	password = request.form['e_password'];
+	username = request.form['e_user'];
+
+	stmt = db.session.update(Users).where(Users.username==session['user_login']).\
+        values(username=username, password=password)
+
+	
+	return render_template('editar_usuario.html', login='true', user=username);
+		

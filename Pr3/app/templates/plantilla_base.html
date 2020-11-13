@@ -96,6 +96,10 @@
             #ver_usuario {
                 padding-bottom: 22%;
             }
+
+            #editar_usuario {
+                padding-bottom: 22%;
+            }
         </style>
 	</head>
 	<body>
@@ -160,6 +164,8 @@
           {% elif login == "true":%}
             <br/>
             <a href="{{ url_for('ver_usuario') }}">Ver usuario</a>
+            <br/>
+            <a href="{{ url_for('editar_usuario') }}">Editar usuario</a>
           {% endif %}
         </div>
         <div class="col" id="contenido">
