@@ -16,6 +16,7 @@ def create_tables():
 
 @app.route('/')
 def pagina_inicio():
+
 	if 'logged_in' in session and session['logged_in'] == True:
 			return render_template('inicio.html', login='true', nombre_us=session['user_login']);
 	else:
@@ -35,15 +36,9 @@ def login():
 	password = request.form['password'];
 	username = request.form['username'];
 
-	users = Users.query.all();
-	saved_user = False;
+	user = Users.query.filter_by(username=username).first();
 
-	for user in users:
-		if user.username == username:
-			saved_user = True;
-			clave = user.password;
-
-	if saved_user == True and clave == password:
+	if user and user.password == password:
 			session['logged_in'] = True;
 			session['user_login'] = username;
 			session['user_password'] = password;
@@ -55,6 +50,8 @@ def unlogin():
 	password = "";
 	user = "";
 	session['logged_in'] = False;
+	session['user_login'] = '';
+	session['user_password'] = '';
 	return render_template('inicio.html', login='false');
 
 @app.route('/register', methods=["GET", "POST"])
@@ -69,15 +66,11 @@ def register_data():
 	password = request.form['r_password'];
 	username = request.form['r_user'];
 
-	saved_user = False;
-	users = Users.query.all();
 	usuario = "";
 
-	for user in users:
-		if user.username == username:
-			saved_user = True;
+	user = Users.query.filter_by(username=username).first();
 
-	if saved_user == True:
+	if user:
 		usuario = "existe"
 	else:
 		user = Users(username=username, password=password);
@@ -133,11 +126,16 @@ def editar_usuario():
 
 @app.route('/edit_data', methods=["GET", "POST"])
 def edit_data():
-	password = request.form['e_password'];
+	if request.form['e_password']:
+		password = request.form['e_password'];
 	username = request.form['e_user'];
 
-	stmt = db.session.update(Users).where(Users.username==session['user_login']).\
-        values(username=username, password=password)
+	user = Users.query.filter_by(username=username).first();
+	user.username = username;
+
+	if password:
+		user.password = password;
+	db.session.commit();
 
 	
 	return render_template('editar_usuario.html', login='true', user=username);

@@ -140,7 +140,7 @@
                 <button type="submit" class="btn btn-primary">Registrarse</button>
             </form>
             {% else %}
-            <div id='bienvenidx'> Bienvenid@, {{ nombre_us }} </div>
+            <div id='bienvenidx'> Bienvenid@, {{ session['user_login'] }} </div>
             <form method="post" action="\unlogin">
                 <button type="submit" class="btn btn-primary">Cerrar sesión</button>
             </form>
