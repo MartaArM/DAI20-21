@@ -122,5 +122,5 @@ def resolver_ej1():
 @app.route('/ver_usuario')
 def ver_usuario():
 	user = session['user_login'];
-	password = session['password'];
-	return render_template('ver_usuario.html', user=user, password=password);
+	password = session['user_password'];
+	return render_template('ver_usuario.html', user=user, password=password, login='true');
