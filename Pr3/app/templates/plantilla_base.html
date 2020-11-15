@@ -167,6 +167,16 @@
             <br/>
             <a href="{{ url_for('editar_usuario') }}">Editar usuario</a>
           {% endif %}
+            <br/>
+            <a href="{{ url_for(session['paginas'][0]) }}">Página 1</a>
+            {% if session['paginas'][1] %}
+            <br/>
+                <a href="{{ url_for(session['paginas'][1]) }}">Página 2</a>
+            {% endif %}
+            {% if session['paginas'][2] %}
+                <br/>
+                <a href="{{ url_for(session['paginas'][2]) }}">Página 3</a>
+            {% endif %}
         </div>
         <div class="col" id="contenido">
           {% block content %}{% endblock %}

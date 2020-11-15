@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy;
 import config
 from models import Users, db
 import random
+import sys
 
 app = Flask(__name__);
 app.config.from_object(config)
@@ -12,20 +13,39 @@ db.init_app(app);
 
 @app.before_first_request
 def create_tables():
-	db.create_all()
+	db.create_all();
+
 
 @app.route('/')
 def pagina_inicio():
+	if 'paginas' in session:
+		array_sesion = session['paginas'];
+		if len(session['paginas']) == 3:
+			array_sesion.pop(0);
+	else:
+		array_sesion = [];
+		session['paginas'] = [];
+
+	array_sesion.append('pagina_inicio');
+	session['paginas'] = array_sesion;
+	
 
 	if 'logged_in' in session and session['logged_in'] == True:
 			return render_template('inicio.html', login='true', nombre_us=session['user_login']);
 	else:
 		return render_template('inicio.html', login='false');
 
-	
 
 @app.route('/prueba')
 def pagina_prueba():
+	array_sesion = session['paginas'];
+	if 'paginas' in session:
+		if len(session['paginas']) == 3:
+			array_sesion.pop(0);
+
+	array_sesion.append('pagina_prueba');
+	session['paginas'] = array_sesion;
+	
 	if 'logged_in' in session and session['logged_in'] == True:
 			return render_template('pagina_prueba.html', login='true', nombre_us=session['user_login']);
 	else:
@@ -56,6 +76,17 @@ def unlogin():
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
+	array_sesion = session['paginas'];
+	if 'paginas' in session:
+		if len(session['paginas']) == 3:
+			array_sesion.pop(0);
+	else:
+		session['paginas'] = [];
+
+	array_sesion.append('register');
+	session['paginas'] = array_sesion;
+	
+
 	password = "";
 	user = "";
 	session['logged_in'] = False;
@@ -82,6 +113,17 @@ def register_data():
 
 @app.route('/ejercicio1', methods=["GET", "POST"])
 def ejercicio1():
+	array_sesion = session['paginas'];
+	if 'paginas' in session:
+		if len(session['paginas']) == 3:
+			array_sesion.pop(0);
+	else:
+		session['paginas'] = [];
+
+	array_sesion.append('ejercicio1');
+	session['paginas'] = array_sesion;
+	
+
 	session['num'] = random.randrange(101);
 	if 'logged_in' in session:
 		if session['logged_in'] == True:
@@ -114,12 +156,34 @@ def resolver_ej1():
 
 @app.route('/ver_usuario')
 def ver_usuario():
+	array_sesion = session['paginas'];
+	if 'paginas' in session:
+		if len(session['paginas']) == 3:
+			array_sesion.pop(0);
+	else:
+		session['paginas'] = [];
+
+	array_sesion.append('ver_usuario');
+	session['paginas'] = array_sesion;
+	
+
 	user = session['user_login'];
 	password = session['user_password'];
 	return render_template('ver_usuario.html', user=user, password=password, login='true');
 
 @app.route('/editar_usuario', methods=["GET", "POST"])
 def editar_usuario():
+	array_sesion = session['paginas'];
+	if 'paginas' in session:
+		if len(session['paginas']) == 3:
+			array_sesion.pop(0);
+	else:
+		session['paginas'] = [];
+
+	array_sesion.append('editar_usuario');
+	session['paginas'] = array_sesion;
+	
+
 	user = session['user_login'];
 	password = session['user_password'];
 	return render_template('editar_usuario.html', user=user, login='true');
