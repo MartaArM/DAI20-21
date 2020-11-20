@@ -1,13 +1,22 @@
 from flask import Flask, render_template, session, request, redirect, url_for;
 from flask_sqlalchemy import SQLAlchemy;
+import pymongo;
 import config
 from models import Users, db
 import random
 import sys
+import werkzeug.utils
+
+UPLOAD_FOLDER="static/images";
+
 
 app = Flask(__name__);
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER;
 app.config.from_object(config)
 app.secret_key = config.secret_key
+
+client = pymongo.MongoClient("mongo", 27017);
+db1 = client.SampleCollections;
 
 db.init_app(app);
 
@@ -34,6 +43,65 @@ def pagina_inicio():
 			return render_template('inicio.html', login='true', nombre_us=session['user_login']);
 	else:
 		return render_template('inicio.html', login='false');
+
+@app.route('/busqueda_bd', methods=["GET", "POST"])
+def busqueda_bd():
+	campo = "";
+
+	if request.method == 'POST':
+		campo = request.form['opcion_busqueda'];
+		valor = request.form['search'];
+
+		if campo == 'nombre':
+			query = { "name": { "$regex": valor, "$options" :'i' } }
+		elif campo == 'tipo':
+			query = { "type": { "$regex": valor, "$options" :'i' } }
+		elif campo == 'altura':
+			query = { "height": { "$regex": valor, "$options" :'i' } }
+		elif campo == 'peso':
+			query = { "weight": { "$regex": valor, "$options" :'i' } }
+		elif campo == 'debilidades':
+			query = { "weaknesses": { "$regex": valor, "$options" :'i' } }
+		pokemon = db1.samples_pokemon.find(query);
+	else:
+		pokemon = db1.samples_pokemon.find();
+
+	lista_pokemon = [];
+	for poke in pokemon:
+			lista_pokemon.append(poke);
+
+	if 'logged_in' in session and session['logged_in'] == True:
+			return render_template('muestra_db.html', pokemon=lista_pokemon, login='true' );
+	else:
+		return render_template('muestra_db.html', pokemon=lista_pokemon, login='false');
+
+@app.route('/aniade_bd', methods=["GET", "POST"])
+def aniade_bd():
+
+	if request.method == "POST":
+		nombre = request.form['poke_name'];
+		tipo = request.form.getlist('poke_type');
+		altura = request.form['poke_height'];
+		altura = altura + 'm';
+		peso = request.form['poke_weight'];
+		peso = peso + 'kg';
+		imagen = request.files['poke_file'];
+
+		filename = werkzeug.utils.secure_filename(imagen.filename)
+		imagen.save(werkzeug.utils.os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+		app.logger.debug(imagen);
+
+
+
+		# pokemon = {'name': nombre, 'type': tipo, 'height': altura, 'weight': peso};
+		# db1.samples_pokemon.insert_one(pokemon);
+
+
+	if 'logged_in' in session and session['logged_in'] == True:
+			return render_template('aniade_bd.html', login='true' );
+	else:
+		return render_template('aniade_bd.html', login='false');
 
 
 @app.route('/prueba')

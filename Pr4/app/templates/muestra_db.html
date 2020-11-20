@@ -1,0 +1,31 @@
+{% extends "plantilla_base.html" %}
+{% block content %}
+   <h1>Base de datos de pokemon</h1>
+
+
+   <form class="search_form" method="post" action="\busqueda_bd">
+        <div class="row">
+            <div class="col">
+                <input type="text" class="form-control" name="search" placeholder="Búsqueda...">
+            </div>
+            <p>Buscar por:</p>
+            <select name="opcion_busqueda">
+                <option value="nombre">Nombre</option>
+                <option value="tipo">Tipo</option>
+                <option value="altura">Altura</option>
+                <option value="peso">Peso</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </div>
+    </form>
+
+   {% for poke in pokemon %}
+   <br/>   
+    <ul class="list-group">
+        <li class="list-group-item"><b>Nombre:</b> {{ poke.name }} <img src={{ poke.img }}></li>
+        <li class="list-group-item"><b>Tipo:</b> {{ poke.type }}</li>
+        <li class="list-group-item"><b>Altura:</b> {{ poke.height }}</li>
+        <li class="list-group-item"><b>Peso: </b>{{ poke.weight }}</li>
+    </ul>
+    {% endfor %}
+{% endblock %}

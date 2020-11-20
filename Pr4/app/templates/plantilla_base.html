@@ -6,7 +6,7 @@
         <!-- <link rel="stylesheet" href="../static/css_pr3.css" > -->
 
         <style type="text/css">
-            /*Barra de navegación superior*/
+           /*Barra de navegación superior*/
             .navbar{
                 background-color: #d9d9d9 !important;
                 height: 10%;
@@ -58,9 +58,25 @@
             /*Menú lateral*/
             #menu_lateral {
                 background-color: #d9b3ff;
-                overflow-x: hidden; 
+                /*overflow-x: hidden; 
                 padding:2%;
-                width: 15%;
+                width: 15%;*/
+            }
+
+            /* Ver bd */
+            #contenido ul {
+                width: 50%;
+                padding-bottom: 5%;
+            }
+            /***********/
+
+            .list-group-item-color {
+                background-color: #d9b3ff !important;
+            }
+
+            #menu_lateral a {
+                color: black;
+                font-size: 15px;
             }
             /*-------*/
 
@@ -99,6 +115,39 @@
 
             #editar_usuario {
                 padding-bottom: 22%;
+            }
+
+            .search_form {
+                width: 60%;
+                margin-left: 3%;
+            }
+            .search_form .row .col input{
+                width: 90%;
+                padding-right: -10%;
+                margin: 0;
+            }
+            .search_form .row p{
+                margin-right: 2%;
+                /*margin-left: -10%;*/
+            } 
+            .search_form .row select{
+                width: 20%;
+                margin-right: 1%;
+                /*margin-left: -10%;*/
+            } 
+
+            .add_form {
+                margin-bottom: 10%;
+                width: 60%;
+            }
+            .tipo_pokemon {
+                margin-top: 5%;
+            }
+            #nombre_poke {
+                width: 80%;
+            }
+            #altura_poke {
+                width: 20%;
             }
         </style>
 	</head>
@@ -153,21 +202,22 @@
     <div class="container">
       <div class="row">
         <div class="col-" id="menu_lateral">
-          <a href="{{ url_for('pagina_inicio') }}">Página de inicio</a>
-          <br/>
-          <a href="{{ url_for('pagina_prueba') }}">Página de prueba</a>
-          <br/>
-          <a href="{{ url_for('ejercicio1') }}">Ejercicio 1</a>
-          {% if login == "false": %}
-              <br/>
-              <a href="{{ url_for('register') }}">Registrar usuario</a>
-          {% elif login == "true":%}
-            <br/>
-            <a href="{{ url_for('ver_usuario') }}">Ver usuario</a>
-            <br/>
-            <a href="{{ url_for('editar_usuario') }}">Editar usuario</a>
-          {% endif %}
-            <br/>
+          <ul class="list-group list-group-flush">
+              <li class="list-group-item list-group-item-color"><a href="{{ url_for('pagina_inicio') }}">Página de inicio</a></li>
+              <li class="list-group-item list-group-item-color"><a href="{{ url_for('pagina_prueba') }}">Página de prueba</a></li>
+              <li class="list-group-item list-group-item-color"><a href="{{ url_for('ejercicio1') }}">Ejercicio 1</a></li>
+                {% if login == "false": %}
+                <li class="list-group-item list-group-item-color"><a href="{{ url_for('register') }}">Registrar usuario</a></li>
+                {% elif login == "true":%}
+              
+              <li class="list-group-item list-group-item-color"><a href="{{ url_for('ver_usuario') }}">Ver usuario</a></li>
+              <li class="list-group-item list-group-item-color"><a href="{{ url_for('editar_usuario') }}">Editar usuario</a></li>
+              {% endif %}
+              <li class="list-group-item list-group-item-color"><a href="{{ url_for('busqueda_bd') }}">Ver base de datos</a></li>
+              <li class="list-group-item list-group-item-color"><a href="{{ url_for('aniade_bd') }}">Añadir a base de datos</a></li>
+        </ul>
+          
+           <!--  <br/>
             <a href="{{ url_for(session['paginas'][0]) }}">Página 1</a>
             {% if session['paginas'][1] %}
             <br/>
@@ -176,7 +226,7 @@
             {% if session['paginas'][2] %}
                 <br/>
                 <a href="{{ url_for(session['paginas'][2]) }}">Página 3</a>
-            {% endif %}
+            {% endif %} -->
         </div>
         <div class="col" id="contenido">
           {% block content %}{% endblock %}
