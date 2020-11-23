@@ -17,4 +17,3 @@ services:
   volumes:
    - ./dump:/dump
    - ./datos_db:/data/db
-

@@ -1,0 +1,51 @@
+{% extends "plantilla_base.html" %}
+{% block content %}
+    {% for poke in pokemon %}
+   <h1>Editar {{ poke.name }}</h1>
+  
+
+   <form method="get" action='\editar_bd_ok' enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Nombre</label>
+            <input type="text" name='poke_name' class="form-control" id="nombre_poke" aria-describedby="emailHelp" value={{ poke.name }}>
+        </div>
+        <div class="form-group">
+            <label>Tipo/s</label>
+            <select class="tipo_pokemon" name="poke_type" multiple>
+                 <option value="Grass" {% if "Grass" in poke.type %} selected {% endif %}>Grass</option>
+                <option value="Poison" {% if "Poison" in poke.type %} selected {% endif %}>Poison</option>
+                <option value="Fire" {% if "Fire" in poke.type %} selected {% endif %}>Fire</option>
+                <option value="Flying" {% if "Flying" in poke.type %} selected {% endif %}>Flying</option>
+                <option value="Water" {% if "Water" in poke.type %} selected {% endif %}>Water</option>
+                <option value="Normal" {% if "Normal" in poke.type %} selected {% endif %}>Normal</option>
+                <option value="Electric" {% if "Electric" in poke.type %} selected {% endif %}>Electric</option>
+                <option value="Ice" {% if "Ice" in poke.type %} selected {% endif %}>Ice</option>
+                <option value="Fighting" {% if "Fighting" in poke.type %} selected {% endif %}>Fighting</option>
+                <option value="Ground" {% if "Ground" in poke.type %} selected {% endif %}>Ground</option>
+                <option value="Psychic" {% if "Psychic" in poke.type %} selected {% endif %}>Psychic</option>
+                <option value="Bug" {% if "Bug" in poke.type %} selected {% endif %}>Bug</option>
+                <option value="Rock" {% if "Rock" in poke.type %} selected {% endif %}Rock</option>
+                <option value="Ghost" {% if "Ghost" in poke.type %} selected {% endif %}>Ghost</option>
+                <option value="Dark" {% if "Dark" in poke.type %} selected {% endif %}>Dark</option>
+                <option value="Dragon" {% if "Dragon" in poke.type %} selected {% endif %}>Dragon</option>
+                <option value="Steel" {% if "Steel" in poke.type %} selected {% endif %}>Steel</option>
+                <option value="Fairy" {% if "Fairy" in poke.type %} selected {% endif %}>Fairy</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Altura</label>
+            <input type="text" name='poke_height' class="form-control" id="altura_poke" aria-describedby="emailHelp" value={{ poke.height }}>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Peso</label>
+            <input type="text" name='poke_weight' class="form-control" id="altura_poke" aria-describedby="emailHelp" value={{ poke.weight }}>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlFile1">Imagen</label>
+            <input type="file" name='poke_file' class="form-control-file" id="exampleFormControlFile1" value={{ poke.img }}>
+        </div>
+        <button type="submit" class="btn btn-primary">Editar</button>
+    </form>
+
+     {% endfor %}
+{% endblock %}

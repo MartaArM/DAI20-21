@@ -3,7 +3,7 @@
    <h1>Base de datos de pokemon</h1>
 
 
-   <form class="search_form" method="post" action="\busqueda_bd">
+   <form class="search_form" method="post" action="\editar_bd">
         <div class="row">
             <div class="col">
                 <input type="text" class="form-control" name="search" placeholder="Búsqueda...">
@@ -21,11 +21,14 @@
 
    {% for poke in pokemon %}
    <br/>   
-    <ul class="list-group">
-        <li class="list-group-item"><b>Nombre:</b> {{ poke.name }} <img id="imagen_poke" src={{ poke.img }}></li>
-        <li class="list-group-item"><b>Tipo:</b> {{ poke.type }}</li>
-        <li class="list-group-item"><b>Altura:</b> {{ poke.height }}</li>
-        <li class="list-group-item"><b>Peso: </b>{{ poke.weight }}</li>
-    </ul>
+   <form class="search_form" method="post" action="\editar_bd_ok">
+        <ul class="list-group">
+            <li class="list-group-item"><input type="text" name="poke_name" value="{{ poke.name }}"><b>Nombre:</b> {{ poke.name }} <img id="imagen_poke" src={{ poke.img }}></input></li>
+            <li class="list-group-item"><b>Tipo:</b> {{ poke.type }}</li>
+            <li class="list-group-item"><b>Altura:</b> {{ poke.height }}</li>
+            <li class="list-group-item"><b>Peso: </b>{{ poke.weight }}</li>
+        </ul>
+        <button type="submit" class="btn btn-primary">Edita</button>
+    </form>
     {% endfor %}
 {% endblock %}

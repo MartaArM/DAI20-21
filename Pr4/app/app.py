@@ -37,71 +37,18 @@ def pagina_inicio():
 
 	array_sesion.append('pagina_inicio');
 	session['paginas'] = array_sesion;
+
+	pokemon = db1.samples_pokemon.find() # devuelve un cursor(*), no una lista ni un iterador
+
+	lista_episodios = []
+	for episodio in pokemon:
+		app.logger.debug(episodio) # salida consola
 	
 
 	if 'logged_in' in session and session['logged_in'] == True:
 			return render_template('inicio.html', login='true', nombre_us=session['user_login']);
 	else:
 		return render_template('inicio.html', login='false');
-
-@app.route('/busqueda_bd', methods=["GET", "POST"])
-def busqueda_bd():
-	campo = "";
-
-	if request.method == 'POST':
-		campo = request.form['opcion_busqueda'];
-		valor = request.form['search'];
-
-		if campo == 'nombre':
-			query = { "name": { "$regex": valor, "$options" :'i' } }
-		elif campo == 'tipo':
-			query = { "type": { "$regex": valor, "$options" :'i' } }
-		elif campo == 'altura':
-			query = { "height": { "$regex": valor, "$options" :'i' } }
-		elif campo == 'peso':
-			query = { "weight": { "$regex": valor, "$options" :'i' } }
-		elif campo == 'debilidades':
-			query = { "weaknesses": { "$regex": valor, "$options" :'i' } }
-		pokemon = db1.samples_pokemon.find(query);
-	else:
-		pokemon = db1.samples_pokemon.find();
-
-	lista_pokemon = [];
-	for poke in pokemon:
-			lista_pokemon.append(poke);
-
-	if 'logged_in' in session and session['logged_in'] == True:
-			return render_template('muestra_db.html', pokemon=lista_pokemon, login='true' );
-	else:
-		return render_template('muestra_db.html', pokemon=lista_pokemon, login='false');
-
-@app.route('/aniade_bd', methods=["GET", "POST"])
-def aniade_bd():
-
-	if request.method == "POST":
-		nombre = request.form['poke_name'];
-		tipo = request.form.getlist('poke_type');
-		altura = request.form['poke_height'];
-		altura = altura + 'm';
-		peso = request.form['poke_weight'];
-		peso = peso + 'kg';
-		imagen = request.files['poke_file'];
-
-		filename = werkzeug.utils.secure_filename(imagen.filename)
-		imagen.save(werkzeug.utils.os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-		app.logger.debug(imagen);
-
-
-
-		# pokemon = {'name': nombre, 'type': tipo, 'height': altura, 'weight': peso};
-		# db1.samples_pokemon.insert_one(pokemon);
-
-
-	if 'logged_in' in session and session['logged_in'] == True:
-			return render_template('aniade_bd.html', login='true' );
-	else:
-		return render_template('aniade_bd.html', login='false');
 
 
 @app.route('/prueba')
@@ -272,3 +219,115 @@ def edit_data():
 	
 	return render_template('editar_usuario.html', login='true', user=username);
 		
+@app.route('/busqueda_bd', methods=["GET", "POST"])
+def busqueda_bd():
+	campo = "";
+
+	if request.method == 'POST':
+		campo = request.form['opcion_busqueda'];
+		valor = request.form['search'];
+
+		if campo == 'nombre':
+			query = { "name": { "$regex": valor, "$options" :'i' } }
+		elif campo == 'tipo':
+			query = { "type": { "$regex": valor, "$options" :'i' } }
+		elif campo == 'altura':
+			query = { "height": { "$regex": valor, "$options" :'i' } }
+		elif campo == 'peso':
+			query = { "weight": { "$regex": valor, "$options" :'i' } }
+		elif campo == 'debilidades':
+			query = { "weaknesses": { "$regex": valor, "$options" :'i' } }
+		pokemon = db1.samples_pokemon.find(query);
+	else:
+		pokemon = db1.samples_pokemon.find();
+
+	lista_pokemon = [];
+	for poke in pokemon:
+			lista_pokemon.append(poke);
+
+	if 'logged_in' in session and session['logged_in'] == True:
+			return render_template('muestra_db.html', pokemon=lista_pokemon, login='true' );
+	else:
+		return render_template('muestra_db.html', pokemon=lista_pokemon, login='false');
+
+@app.route('/aniade_bd', methods=["GET", "POST"])
+def aniade_bd():
+
+	if request.method == "POST":
+		nombre = request.form['poke_name'];
+		tipo = request.form.getlist('poke_type');
+		altura = request.form['poke_height'];
+		altura = altura + 'm';
+		peso = request.form['poke_weight'];
+		peso = peso + 'kg';
+		imagen = request.files['poke_file'];
+
+		filename = werkzeug.utils.secure_filename(imagen.filename)
+		imagen.save(werkzeug.utils.os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+		img = UPLOAD_FOLDER + '/' + filename;
+		pokemon = {'name': nombre, 'type': tipo, 'height': altura, 'weight': peso, 'img':img};
+		db1.samples_pokemon.insert_one(pokemon);
+
+
+	if 'logged_in' in session and session['logged_in'] == True:
+			return render_template('aniade_bd.html', login='true' );
+	else:
+		return render_template('aniade_bd.html', login='false');
+
+@app.route('/editar_bd', methods=["GET", "POST"])
+def editar_bd():
+	campo = "";
+
+	if request.method == 'POST':
+		campo = request.form['opcion_busqueda'];
+		valor = request.form['search'];
+
+		if campo == 'nombre':
+			query = { "name": { "$regex": valor, "$options" :'i' } }
+		elif campo == 'tipo':
+			query = { "type": { "$regex": valor, "$options" :'i' } }
+		elif campo == 'altura':
+			query = { "height": { "$regex": valor, "$options" :'i' } }
+		elif campo == 'peso':
+			query = { "weight": { "$regex": valor, "$options" :'i' } }
+		elif campo == 'debilidades':
+			query = { "weaknesses": { "$regex": valor, "$options" :'i' } }
+		pokemon = db1.samples_pokemon.find(query);
+	else:
+		pokemon = db1.samples_pokemon.find();
+
+	lista_pokemon = [];
+	for poke in pokemon:
+			lista_pokemon.append(poke);
+
+	if 'logged_in' in session and session['logged_in'] == True:
+			return render_template('edita_db.html', pokemon=lista_pokemon, login='true' );
+	else:
+		return render_template('edita_db.html', pokemon=lista_pokemon, login='false');
+
+@app.route('/editar_bd_ok', methods=["GET", "POST"])
+def editar_bd_ok():
+	if request.method == 'POST' :
+		nombre = request.form['poke_name'];
+		pokemon = db1.samples_pokemon.find({'name':nombre})
+		lista_pokemon = [];
+		for poke in pokemon:
+			lista_pokemon.append(poke);
+			
+	if request.method == 'GET' :
+			nombre_n = request.form['poke_name'];
+			tipo = request.form.getlist('poke_type');
+			altura = request.form['poke_height'];
+			altura = altura + 'm';
+			peso = request.form['poke_weight'];
+			peso = peso + 'kg';
+			imagen = request.files['poke_file'];
+			db1.samples_pokemon.update({'name':nombre_n}, {'name': nombre, 'type': tipo, 'height': altura, 'weight': peso, 'img':img});
+
+
+
+	if 'logged_in' in session and session['logged_in'] == True:
+			return render_template('editar_bd_form.html', pokemon=lista_pokemon,  login='true' );
+	else:
+		return render_template('editar_bd_form.html', pokemon=lista_pokemon,  login='false');

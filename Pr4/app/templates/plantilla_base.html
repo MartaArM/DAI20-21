@@ -149,6 +149,11 @@
             #altura_poke {
                 width: 20%;
             }
+
+            #imagen_poke {
+                width: 30%;  
+                padding-left: 10%;
+            }
         </style>
 	</head>
 	<body>
@@ -215,6 +220,7 @@
               {% endif %}
               <li class="list-group-item list-group-item-color"><a href="{{ url_for('busqueda_bd') }}">Ver base de datos</a></li>
               <li class="list-group-item list-group-item-color"><a href="{{ url_for('aniade_bd') }}">Añadir a base de datos</a></li>
+              <li class="list-group-item list-group-item-color"><a href="{{ url_for('editar_bd') }}">Editar base de datos</a></li>
         </ul>
           
            <!--  <br/>
