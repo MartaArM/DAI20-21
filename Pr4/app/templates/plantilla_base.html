@@ -154,12 +154,16 @@
                 width: 30%;  
                 padding-left: 10%;
             }
+
+            .edit_form{
+                padding-bottom: 5%;
+            }
         </style>
 	</head>
 	<body>
         <!-- Barra de navegación -->
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
-			<a class="navbar-brand" href="#">
+			<a class="navbar-brand" href="{{ url_for('pagina_inicio') }}">
             <img src="../static/images/logo_dai.jpg" width="50" height="50" alt="" loading="lazy">
         </a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -221,6 +225,7 @@
               <li class="list-group-item list-group-item-color"><a href="{{ url_for('busqueda_bd') }}">Ver base de datos</a></li>
               <li class="list-group-item list-group-item-color"><a href="{{ url_for('aniade_bd') }}">Añadir a base de datos</a></li>
               <li class="list-group-item list-group-item-color"><a href="{{ url_for('editar_bd') }}">Editar base de datos</a></li>
+              <li class="list-group-item list-group-item-color"><a href="{{ url_for('eliminar_bd') }}">Eliminar base de datos</a></li>
         </ul>
           
            <!--  <br/>

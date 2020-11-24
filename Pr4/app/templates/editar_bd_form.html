@@ -1,10 +1,14 @@
 {% extends "plantilla_base.html" %}
 {% block content %}
+
     {% for poke in pokemon %}
    <h1>Editar {{ poke.name }}</h1>
   
+    {% if edit %}
+     <p> Su pokemon ha sido editado con éxito </p>
+    {% endif %}
 
-   <form method="get" action='\editar_bd_ok' enctype="multipart/form-data">
+   <form method="post" class="search_form" action='\editar_bd_ok' enctype="multipart/form-data">
         <div class="form-group">
             <label for="exampleInputEmail1">Nombre</label>
             <input type="text" name='poke_name' class="form-control" id="nombre_poke" aria-describedby="emailHelp" value={{ poke.name }}>
@@ -32,6 +36,7 @@
                 <option value="Fairy" {% if "Fairy" in poke.type %} selected {% endif %}>Fairy</option>
             </select>
         </div>
+        
         <div class="form-group">
             <label for="exampleInputEmail1">Altura</label>
             <input type="text" name='poke_height' class="form-control" id="altura_poke" aria-describedby="emailHelp" value={{ poke.height }}>
