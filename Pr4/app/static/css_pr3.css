@@ -1,22 +1,159 @@
-.btn {
-	background-color: #00cc99;
-	border-color:  #00cc99;
+.navbar{
+    background-color: #d9d9d9 !important;
+    height: 10%;
 }
+/*-------*/
 
+/*Formulario de login*/
 .login_form {
-	padding-right: 2%;
-	width: 400px;
+    padding-right: 2%;
+    width: 400px;
 }
-
 .col {
-	padding-left: 0; 
-	padding-right: 1%;
+    padding-left: 0; 
+    padding-right: 1%;
+}
+.container {
+    margin-left: 0%;
+    margin-bottom: 0%;
+} 
+.btn {
+    background-color: #00cc99;
+    border-color:  #00cc99;
+}
+/*-------*/
+
+/*Formulario de registro*/
+.register_form {
+    
+    width: 40%;
 }
 
-.footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 60px;
+.warning-reg {
+    padding-bottom: 22%;
+
+}
+#msg-red {
+    color: red;
+}
+#msg-green {
+    color: green;
+}
+/*-------*/
+
+/*Ejercicio 1*/
+#start_again {
+    padding-top: 1%;
+}
+
+/*Menú lateral*/
+#menu_lateral {
+    background-color: #d9b3ff;
+    /*overflow-x: hidden; 
+    padding:2%;
+    width: 15%;*/
+}
+
+/* Ver bd */
+#contenido .list-group {
+    width: 50%;
+    padding-bottom: 5%;
+}
+/***********/
+
+.list-group-item-color {
+    background-color: #d9b3ff !important;
+}
+
+#menu_lateral a {
+    color: black;
+    font-size: 15px;
+}
+/*-------*/
+
+#contenido {
+    padding-top: 2%;
+    padding-left: 3%;
+    padding-bottom: 20%;
+}
+
+/*Pie de página*/
+#pie_pagina {
+    color: black !important;
+}
+.page-footer{
     background-color: #00cc99;
+    height: 3%;
+    padding-top: 10%;
+}
+/*-------*/
+
+/*Página prueba*/
+#texto_lorem{
+    margin-left: 4%;
+    margin-top: 1%;
+    width: 80%;
+}
+/*-------*/
+
+/*Mensaje login*/
+#bienvenidx {
+    padding-right: 1%;
+}
+
+/*Ver usuario*/
+#ver_usuario {
+    padding-bottom: 22%;
+}
+
+#editar_usuario {
+    padding-bottom: 22%;
+}
+
+.search_form {
+    width: 60%;
+    margin-left: 3%;
+}
+.search_form .row .col input{
+    width: 90%;
+    padding-right: -10%;
+    margin: 0;
+}
+.search_form .row p{
+    margin-right: 2%;
+    /*margin-left: -10%;*/
+} 
+.search_form .row select{
+    width: 20%;
+    margin-right: 1%;
+    /*margin-left: -10%;*/
+} 
+
+.add_form {
+    margin-bottom: 10%;
+    width: 60%;
+}
+.tipo_pokemon {
+    margin-top: 5%;
+}
+#nombre_poke {
+    width: 80%;
+}
+#altura_poke {
+    width: 20%;
+}
+
+#imagen_poke {
+    width: 30%;  
+    padding-left: 10%;
+}
+
+.edit_form{
+    padding-bottom: 5%;
+}
+
+.edit_form1{
+    padding-left: 2%;
+    padding-bottom: 5%;
+    width: 70%;
 }

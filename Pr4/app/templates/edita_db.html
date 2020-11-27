@@ -22,7 +22,7 @@
    {% for poke in pokemon %}
    <br/>   
    <form class="edit_form" method="post" action="\editar_bd_form">
-        <input type="text" name="poke_name" value="{{ poke.name }}" hidden></input>
+        <input type="text" name="id_poke" value="{{ poke.num }}" hidden></input>
         <ul class="list-group">
 
             <li class="list-group-item"><b>Nombre:</b> {{ poke.name }} <img id="imagen_poke" src={{ poke.img }}></li>
@@ -30,7 +30,8 @@
             <li class="list-group-item"><b>Altura:</b> {{ poke.height }}</li>
             <li class="list-group-item"><b>Peso: </b>{{ poke.weight }}</li>
         </ul>
-        <button type="submit" class="btn btn-primary">Editars</button>
+        <button type="submit" class="btn btn-primary">Editar</button>
     </form>
     {% endfor %}
+    <div class="fondo"></div>
 {% endblock %}

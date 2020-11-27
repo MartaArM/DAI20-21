@@ -2,6 +2,9 @@
 {% block content %}
    <h1>Base de datos de pokemon</h1>
 
+   {% if add %}
+   <p id="msg-green">Su pokemon ha sido añadido con éxito</p>
+   {% endif %}
 
    <form class="search_form" method="post" action="\busqueda_bd">
         <div class="row">
@@ -28,4 +31,5 @@
         <li class="list-group-item"><b>Peso: </b>{{ poke.weight }}</li>
     </ul>
     {% endfor %}
+    <div class="fondo"></div>
 {% endblock %}

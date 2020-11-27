@@ -5,11 +5,12 @@
    <h1>Editar {{ poke.name }}</h1>
   
     {% if edit %}
-     <p> Su pokemon ha sido editado con éxito </p>
+     <p id="msg-green"> Su pokemon ha sido editado con éxito </p>
     {% endif %}
 
-   <form method="post" class="search_form" action='\editar_bd_ok' enctype="multipart/form-data">
+   <form method="post" class="edit_form1" action='\editar_bd_ok' enctype="multipart/form-data">
         <div class="form-group">
+            <input type="text" name="id_poke" value="{{ poke.num }}" hidden></input>
             <label for="exampleInputEmail1">Nombre</label>
             <input type="text" name='poke_name' class="form-control" id="nombre_poke" aria-describedby="emailHelp" value={{ poke.name }}>
         </div>

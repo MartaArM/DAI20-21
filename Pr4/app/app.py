@@ -243,12 +243,20 @@ def busqueda_bd():
 
 	lista_pokemon = [];
 	for poke in pokemon:
-			lista_pokemon.append(poke);
+		lista_pokemon.append(poke);
+
+	if 'add' in session:
+		add = True;
+	else:
+		add = False;
+
+	session.pop('edit_poke', None);
+
 
 	if 'logged_in' in session and session['logged_in'] == True:
-			return render_template('muestra_db.html', pokemon=lista_pokemon, login='true' );
+			return render_template('muestra_db.html', pokemon=lista_pokemon, login='true', add=add);
 	else:
-		return render_template('muestra_db.html', pokemon=lista_pokemon, login='false');
+		return render_template('muestra_db.html', pokemon=lista_pokemon, login='false', add=add);
 
 @app.route('/aniade_bd', methods=["GET", "POST"])
 def aniade_bd():
@@ -260,20 +268,36 @@ def aniade_bd():
 		altura = altura + 'm';
 		peso = request.form['poke_weight'];
 		peso = peso + 'kg';
-		imagen = request.files['poke_file'];
 
-		filename = werkzeug.utils.secure_filename(imagen.filename)
-		imagen.save(werkzeug.utils.os.path.join(app.config['UPLOAD_FOLDER'], filename))
+		if request.files['poke_file']:
+			imagen = request.files['poke_file'];
+			filename = werkzeug.utils.secure_filename(imagen.filename);
+			imagen.save(werkzeug.utils.os.path.join(app.config['UPLOAD_FOLDER'], filename));
+			img = UPLOAD_FOLDER + '/' + filename;
+		else:
+			img = "";
 
-		img = UPLOAD_FOLDER + '/' + filename;
-		pokemon = {'name': nombre, 'type': tipo, 'height': altura, 'weight': peso, 'img':img};
+		pokemon = db1.samples_pokemon.find().sort('id',-1).limit(1);
+		lista_pokemon2 = [];
+		for poke in pokemon:
+			max_num = poke['num'];
+
+
+
+		pokemon = {'num': int(max_num)+1, 'name': nombre, 'type': tipo, 'height': altura, 'weight': peso, 'img':img};
 		db1.samples_pokemon.insert_one(pokemon);
 
+		session['add'] = True;
 
-	if 'logged_in' in session and session['logged_in'] == True:
-			return render_template('aniade_bd.html', login='true' );
+		return redirect(url_for('busqueda_bd'));
 	else:
-		return render_template('aniade_bd.html', login='false');
+		if 'logged_in' in session and session['logged_in'] == True:
+			return render_template('aniade_bd.html', login='true');
+		else:
+			return render_template('aniade_bd.html', login='false');
+
+	
+
 
 @app.route('/editar_bd', methods=["GET", "POST"])
 def editar_bd():
@@ -300,7 +324,7 @@ def editar_bd():
 	lista_pokemon = [];
 	for poke in pokemon:
 		lista_pokemon.append(poke);
-		
+
 
 	if 'logged_in' in session and session['logged_in'] == True:
 			return render_template('edita_db.html', pokemon=lista_pokemon, login='true' );
@@ -310,16 +334,19 @@ def editar_bd():
 @app.route('/editar_bd_form', methods=["GET", "POST"])
 def editar_bd_form():
 
-	nombre = "";
+	num = "";
 	if request.method == 'POST' :
-		nombre = request.form['poke_name'];
-		session['poke_name'] = nombre;
-	elif 'poke_name_edit' in session:
-		nombre = session['poke_name_edit'];
-		
-	pokemon = db1.samples_pokemon.find({'name':nombre})
+		num = request.form['id_poke'];
+	else:
+		num = session['num_edit'];
+
+	session.pop('num_edit', None);
+
+
+	pokemon = db1.samples_pokemon.find({'num':num})
 	lista_pokemon = [];
 	for poke in pokemon:
+		app.logger.debug("AQfdbsfgUI" + str(poke['num']));
 		poke['height'] = poke['height'].replace('m','');
 		poke['weight'] = poke['weight'].replace('kg','');
 		lista_pokemon.append(poke);
@@ -328,22 +355,23 @@ def editar_bd_form():
 		session['poke_img'] = poke['img'];
 
 	if 'edit_poke' in session:
-		edit = session['edit_poke'];
-		session.pop('edit_poke', None);
-		if 'logged_in' in session and session['logged_in'] == True:
-			return render_template('editar_bd_form.html', pokemon=lista_pokemon,  login='true', edit=edit);
-		else:
-			return render_template('editar_bd_form.html', pokemon=lista_pokemon,  login='false', edit=edit);
+		edit = True;
 	else:
-		if 'logged_in' in session and session['logged_in'] == True:
-				return render_template('editar_bd_form.html', pokemon=lista_pokemon,  login='true');
-		else:
-			return render_template('editar_bd_form.html', pokemon=lista_pokemon,  login='false');
+		edit = False;
+
+	session.pop('edit_poke', None);
+
+	if 'logged_in' in session and session['logged_in'] == True:
+		return render_template('editar_bd_form.html', pokemon=lista_pokemon,  login='true', edit=edit);
+	else:
+		return render_template('editar_bd_form.html', pokemon=lista_pokemon,  login='false', edit=edit);
 
 @app.route('/editar_bd_ok', methods=["GET", "POST"])
 def editar_bd_ok():
 			
 	if request.method == 'POST' :
+		num = request.form['id_poke'];
+		app.logger.debug(num)
 		nombre = request.form['poke_name'];
 		tipo = request.form.getlist('poke_type');
 		altura = request.form['poke_height'];
@@ -352,6 +380,7 @@ def editar_bd_ok():
 		peso = peso + 'kg';
 
 		if request.files['poke_file']:
+
 			imagen = request.files['poke_file'];
 			filename = werkzeug.utils.secure_filename(imagen.filename);
 			imagen.save(werkzeug.utils.os.path.join(app.config['UPLOAD_FOLDER'], filename));
@@ -361,11 +390,12 @@ def editar_bd_ok():
 			session.pop('poke_img', None)
 
 
-		db1.samples_pokemon.update({'name':session['poke_name']}, {'name': nombre, 'type': tipo, 'height': altura, 
+		db1.samples_pokemon.update({'num':num}, {'num':num, 'name': nombre, 'type': tipo, 'height': altura, 
 			'weight': peso, 'img':img});
-		session['poke_name_edit'] = nombre;
+		session['num_edit'] = num;
 		session['edit_poke'] = True;
 		session.pop('poke_name', None);
+
 
 
 	return redirect(url_for('editar_bd_form'));
@@ -413,8 +443,8 @@ def eliminar_bd():
 @app.route('/eliminar_bd_ok', methods=["GET", "POST"])
 def eliminar_bd_ok():
 	if request.method == 'POST' :
-		nombre = request.form['poke_name'];
-		db1.samples_pokemon.delete_one({'name':nombre});
+		numero = request.form['id_poke'];
+		db1.samples_pokemon.delete_one({'num':int(numero)});
 		session['delete'] = True;
 
 
