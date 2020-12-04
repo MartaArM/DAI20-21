@@ -255,6 +255,15 @@ def busqueda_bd():
 def aniade_bd():
 	img = "";
 	if request.method == "POST":
+		max_num=[];
+		max_num = db1.samples_pokemon.find().sort('num', -1).limit(1);
+		
+		for mn in max_num:
+			num = mn.get('num');
+
+		num = int(num) + 1;
+		num = str(num);
+
 		nombre = request.form['poke_name'];
 		tipo = request.form.getlist('poke_type');
 		altura = request.form['poke_height'];
@@ -269,7 +278,7 @@ def aniade_bd():
 
 			img = UPLOAD_FOLDER + '/' + filename;
 
-		pokemon = {'name': nombre, 'type': tipo, 'height': altura, 'weight': peso, 'img':img};
+		pokemon = {'num': num, 'name': nombre, 'type': tipo, 'height': altura, 'weight': peso, 'img':img};
 		db1.samples_pokemon.insert_one(pokemon);
 
 
@@ -430,7 +439,7 @@ def api1():
 		pokemon = db1.samples_pokemon.find().sort('num')
 		for poke in pokemon:
 			lista.append({
-				'id':    str(poke.get('num')), # pasa a string el ObjectId
+				'id':    str(poke.get('num')),
 				'nombre': poke.get('name'), 
 				'tipo':  poke.get('type'),
 				'altura':  poke.get('height'),
@@ -438,5 +447,41 @@ def api1():
 			})
 		return jsonify(lista)
 	elif request.method == 'POST':
-		# return request.form['name'];
-		return "pepe";
+		max_num=[];
+		max_num = db1.samples_pokemon.find().sort('num', -1).limit(1);
+		
+		for mn in max_num:
+			num = mn.get('num');
+		num = int(num) + 1;
+		num = str(num);
+
+		nombre = request.form['nombre'];
+		tipo = request.form['tipo'];
+		altura = request.form['altura'];
+		peso = request.form['peso'];
+		
+		pokemon = {'num': num, 'name': nombre, 'type': tipo, 'height': altura, 'weight': peso};
+		db1.samples_pokemon.insert_one(pokemon);
+		
+		return jsonify({
+				'id':    num,
+				'nombre': nombre, 
+				'tipo':  tipo,
+				'altura':  altura,
+				'peso':  peso
+			})
+
+@app.route('/api/pokemon/<name>', methods=['GET', 'PUT', 'DELETE'])
+def api2(name):
+    if request.method == 'GET':
+        try:
+            poke = db1.samples_pokemon.find_one({'name':name})
+            return jsonify({
+                'id':    str(poke.get('num')), # pasa a string el ObjectId
+				'nombre': poke.get('name'), 
+				'tipo':  poke.get('type'),
+				'altura':  poke.get('height'),
+				'peso':  poke.get('weight')
+            })
+        except:
+          return jsonify({'error':'Not found'}), 404
