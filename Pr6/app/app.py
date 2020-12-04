@@ -436,7 +436,14 @@ def eliminar_bd_ok():
 def api1():
 	if request.method == 'GET':
 		lista = []
-		pokemon = db1.samples_pokemon.find().sort('num')
+
+		# Busca por tipo
+		if request.args.get("tipo"):
+			tipo = request.args.get("tipo");
+			query = { "type": { "$regex": tipo, "$options" :'i' } }
+			pokemon = db1.samples_pokemon.find(query).sort('num')
+		else:
+			pokemon = db1.samples_pokemon.find().sort('num')
 		for poke in pokemon:
 			lista.append({
 				'id':    str(poke.get('num')),
@@ -473,15 +480,62 @@ def api1():
 
 @app.route('/api/pokemon/<name>', methods=['GET', 'PUT', 'DELETE'])
 def api2(name):
-    if request.method == 'GET':
-        try:
-            poke = db1.samples_pokemon.find_one({'name':name})
-            return jsonify({
-                'id':    str(poke.get('num')), # pasa a string el ObjectId
+	if request.method == 'GET':
+		try:
+			poke = db1.samples_pokemon.find_one({'name':name})
+			return jsonify({
+				'id':    str(poke.get('num')), # pasa a string el ObjectId
 				'nombre': poke.get('name'), 
 				'tipo':  poke.get('type'),
 				'altura':  poke.get('height'),
 				'peso':  poke.get('weight')
-            })
-        except:
-          return jsonify({'error':'Not found'}), 404
+			})
+		except:
+			return jsonify({'error':'Not found'}), 404
+	elif request.method == 'PUT':
+		try:
+			poke = db1.samples_pokemon.find_one({'name':name});
+			num = poke.get('num');
+			nombre = poke.get('name');
+			tipo = poke.get('type');
+			altura = poke.get('height');
+			peso = poke.get('weight');
+
+			if request.form.get("nombre"):
+				nombre = request.form['nombre'];
+			if request.form.get("tipo"):
+				tipo = request.form['tipo'];
+			if request.form.get("altura"):
+				altura = request.form['altura'];
+			if request.form.get("peso"):
+				peso = request.form['peso'];
+			db1.samples_pokemon.update({'name':name}, {'num': num, 'name': nombre, 'type': tipo, 'height': altura, 'weight': peso});
+			return jsonify({
+				'id':    num,
+				'nombre': nombre, 
+				'tipo':  tipo,
+				'altura':  altura,
+				'peso':  peso
+			})
+		except:
+			return jsonify({'error':'Not found'}), 404
+	elif request.method == 'DELETE':
+		try:
+			poke = db1.samples_pokemon.find_one({'name':name});
+			num = poke.get('num');
+			nombre = poke.get('name');
+			tipo = poke.get('type');
+			altura = poke.get('height');
+			peso = poke.get('weight');
+
+			db1.samples_pokemon.delete_one({'name':nombre});
+
+			return jsonify({
+				'id':    str(poke.get('num')),
+				'nombre': poke.get('name'), 
+				'tipo':  poke.get('type'),
+				'altura':  poke.get('height'),
+				'peso':  poke.get('weight')
+			})
+		except:
+			return jsonify({'error':'Not found'}), 404
