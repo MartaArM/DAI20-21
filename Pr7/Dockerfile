@@ -1,13 +1,6 @@
-# Dockerfile
-FROM python:3.7-alpine
-
-# directorio dentro del contenedor para el código
-WORKDIR /app
-COPY . /app
+FROM python:3
+ENV PYTHONUNBUFFERED=1
+WORKDIR /code
+COPY requirements.txt /code/
 RUN pip install -r requirements.txt
-
-ENV FLASK_APP app.py
-ENV FLASK_RUN_HOST 0.0.0.0
-ENV FLASK_ENV development
-
-CMD ["flask", "run"]
+COPY . /code/

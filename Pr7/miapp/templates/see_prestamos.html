@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+
+	{% for prestamo in prestamos %}
+   <br/>   
+    <ul class="list-group see_libros">
+        <li class="list-group-item"><b>Libro:</b> {{ prestamo.libro }}</li>
+        <li class="list-group-item"><b>Fecha:</b> {{ prestamo.fecha}}</li>
+        <li class="list-group-item"><b>Usuario:</b> {{ prestamo.usuario }}</li>
+    </ul>
+    {% endfor %}
+
+{% endblock %}

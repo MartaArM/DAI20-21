@@ -1,19 +1,18 @@
 # docker-compose.yml
 version: '3.7'
 services:
- app:
+ db:
+  image: postgres
+  environment:
+    - POSTGRES_DB=postgres
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres
+ web:
   build: .
+  command: python manage.py runserver 0.0.0.0:8080
+  volumes:
+    - .:/code
+  ports:
+    - "8080:8080"
   depends_on:
-   - mongo
-  ports:
-   - 5000:5000
-  volumes:
-   - ./app:/app
-
- mongo:
-  image: mongo:latest
-  ports:
-   - 27017:27017
-  volumes:
-   - ./dump:/dump
-   - ./datos_db:/data/db
+    - db
