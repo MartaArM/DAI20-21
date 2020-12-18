@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 
-
+	<div class='mostrar_uno'>
 	{% for libro in libros %}
    <br/>   
     <ul class="list-group see_libros">
@@ -11,5 +11,6 @@
         <li class="list-group-item"><b>Editorial:</b> {{ libro.editorial }}</li>
     </ul>
     {% endfor %}
+    </div>
 
 {% endblock %}

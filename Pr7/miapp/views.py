@@ -17,6 +17,11 @@ def see_libros(request):
 	libros = Libro.objects.all()
 	return render(request,'see_libros.html',{'libros': libros})
 
+# @api_view(['GET'])
+def see_libro(request, id):
+	libros = Libro.objects.all().filter(id=id)
+	return render(request,'see_libros.html',{'libros': libros})
+
 def add_libros(request):
 	if request.method == 'POST':
 		libro = Libro();
@@ -28,7 +33,12 @@ def add_libros(request):
 			libro.editorial = form.cleaned_data['editorial']
 			libro.save()
 
-			return redirect(see_libros)
+			libro_max = Libro.objects.all().order_by("-id")[0];
+
+			id = libro_max.id
+
+
+			return redirect(see_libro, id)
 	else:
 		form = LibroForm();
 	return render(request, 'add_libros.html', {'form':form})
@@ -54,13 +64,23 @@ def edit_libros_ok(request):
 	id = request.session['id']
 	libro = Libro.objects.get(id=id);
 	form = LibroForm(request.POST);
-	print(form.errors)
 	if form.is_valid():
         # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
 		libro.titulo = form.cleaned_data['titulo']
 		libro.autor = form.cleaned_data['autor']
 		libro.editorial = form.cleaned_data['editorial']
 		libro.save()
+
+	return redirect(see_libro, id)
+
+def delete_libros(request):
+	libros = Libro.objects.all()
+	return render(request,'delete_libros.html',{'libros': libros})
+
+@csrf_exempt 
+def delete_libros_ok(request):
+	id = request.POST['libro'];
+	Libro.objects.all().filter(id=id).delete()
 
 	return redirect(see_libros)
 
@@ -79,7 +99,11 @@ def add_prestamos(request):
 			prestamo.usuario = form.cleaned_data['usuario']
 			prestamo.save()
 
-			return redirect(see_prestamos)
+			prestamo_max = Prestamo.objects.all().order_by("-id")[0];
+
+			id = prestamo_max.id
+
+			return redirect(see_prestamo, id)
 	else:
 		form = PrestamoForm();
 	return render(request, 'add_prestamos.html', {'form':form})
@@ -112,5 +136,20 @@ def edit_prestamos_ok(request):
 		prestamo.fecha = form.cleaned_data['fecha']
 		prestamo.usuario = form.cleaned_data['usuario']
 		prestamo.save()
+
+	return redirect(see_prestamos)
+
+def see_prestamo(request,id):
+	prestamos = Prestamo.objects.all().filter(id=id)
+	return render(request,'see_prestamos.html',{'prestamos': prestamos})
+
+def delete_prestamos(request):
+	prestamos = Prestamo.objects.all()
+	return render(request,'delete_prestamos.html',{'prestamos': prestamos})
+
+@csrf_exempt 
+def delete_prestamos_ok(request):
+	id = request.POST['prestamo_id'];
+	Prestamo.objects.all().filter(id=id).delete()
 
 	return redirect(see_prestamos)
