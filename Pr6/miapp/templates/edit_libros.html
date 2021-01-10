@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<h2>Editar libro</h2>
+{% for libro in libros %}
+   <br/>   
+   <form class="edit_form" method="post" action="edit_form">
+        <input type="text" name="libro" value="{{ libro.id }}" hidden></input>
+        <ul class="list-group">
+            <li class="list-group-item"><b>Titulo:</b> {{ libro.titulo }}</li>
+            <li class="list-group-item"><b>Nombre:</b> {{ libro.autor }}</li>
+            <li class="list-group-item"><b>Editorial:</b> {{ libro.editorial }}</li>
+        </ul>
+
+        <button type="submit" class="btn btn-primary">Editar</button>
+    </form>
+    {% endfor %}
+{% endblock %}
