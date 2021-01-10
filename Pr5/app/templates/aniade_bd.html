@@ -1,0 +1,49 @@
+{% extends "plantilla_base.html" %}
+{% block content %}
+   <h1>Añadir a base de datos</h1>
+
+   <form class="add_form" method="post" action='\aniade_bd' enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Nombre</label>
+            <input type="text" name='poke_name' class="form-control" id="nombre_poke" aria-describedby="emailHelp" placeholder="Nombre">
+        </div>
+        <div class="form-group">
+            <label>Tipo/s</label>
+            <select class="tipo_pokemon" name="poke_type" multiple>
+                <option value="Grass">Grass</option>
+                <option value="Poison">Poison</option>
+                <option value="Fire">Fire</option>
+                <option value="Flying">Flying</option>
+                <option value="Water">Water</option>
+                <option value="Normal">Normal</option>
+                <option value="Electric">Electric</option>
+                <option value="Ice">Ice</option>
+                <option value="Fighting">Fighting</option>
+                <option value="Ground">Ground</option>
+                <option value="Psychic">Psychic</option>
+                <option value="Bug">Bug</option>
+                <option value="Rock">Rock</option>
+                <option value="Ghost">Ghost</option>
+                <option value="Dark">Dark</option>
+                <option value="Dragon">Dragon</option>
+                <option value="Steel">Steel</option>
+                <option value="Fairy">Fairy</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Altura</label>
+            <input type="text" name='poke_height' class="form-control" id="altura_poke" aria-describedby="emailHelp" placeholder="Altura">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Peso</label>
+            <input type="text" name='poke_weight' class="form-control" id="altura_poke" aria-describedby="emailHelp" placeholder="Peso">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlFile1">Imagen</label>
+            <input type="file" name='poke_file' class="form-control-file" id="exampleFormControlFile1">
+        </div>
+        <button type="submit" class="btn btn-primary">Añadir</button>
+    </form>
+
+
+{% endblock %}
