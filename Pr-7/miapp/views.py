@@ -2,11 +2,13 @@ from django.shortcuts import render, HttpResponse, redirect
 from .models import Libro, Prestamo
 from .forms import LibroForm, PrestamoForm
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
 
 # Create your views here.
 
 def index(request):
 	context = {}
+	user = User.objects.create_user('pepe', 'myemail@crazymail.com', '123')
 	return render(request, 'inicio.html', context)
 
 def test_template(request):

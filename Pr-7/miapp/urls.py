@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from django.conf.urls import url, include
 
 urlpatterns = [
   path('', views.index, name='index'),
@@ -20,5 +21,6 @@ urlpatterns = [
   path('prestamos/edit_prestamo_ok', views.edit_prestamos_ok, name='edit_prestamos_ok'),
   path('prestamos/delete', views.delete_prestamos, name='delete_prestamos'),
   path('prestamos/delete_prestamo_ok', views.delete_prestamos_ok, name='delete_prestamos_ok'),
+  path('accounts/', include('allauth.urls')),
 
 ]
