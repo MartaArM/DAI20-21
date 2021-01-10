@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<h2>Nuevo libro</h2>
+<form method="POST" action="/prestamos/add" class="search_form post-form add_libros">{% csrf_token %}
+	<div class="form-group">
+    <label for="exampleInputEmail1">Libro</label>
+    <br/>
+    	{{ form.libro }}
+        
+	</div>
+	<div class="form-group">
+    <label for="exampleInputEmail1">Fecha</label>
+    <br/>
+    	{{ form.fecha }}
+	</div>
+	<div class="form-group">
+    <label for="exampleInputEmail1">Usuario</label>
+    <br/>
+    	{{ form.usuario }}
+	</div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+{% endblock %}
