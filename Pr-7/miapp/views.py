@@ -8,7 +8,6 @@ from django.contrib.auth.models import User
 
 def index(request):
 	context = {}
-	user = User.objects.create_user('pepe', 'myemail@crazymail.com', '123')
 	return render(request, 'inicio.html', context)
 
 def test_template(request):
