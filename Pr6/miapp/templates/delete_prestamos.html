@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<h2>Editar prestamo</h2>
+{% for prestamo in prestamos %}
+   <br/>   
+   <form class="edit_form" method="post" action="delete_prestamo_ok">
+        <input type="text" name="prestamo_id" value="{{ prestamo.id }}" hidden></input>
+        <ul class="list-group">
+            <li class="list-group-item"><b>Libro:</b> {{ prestamo.libro }}</li>
+            <li class="list-group-item"><b>Fecha:</b> {{ prestamo.fecha }}</li>
+            <li class="list-group-item"><b>Usuario:</b> {{ prestamo.usuario }}</li>
+        </ul>
+
+        <button type="submit" class="btn btn-primary">Eliminar</button>
+    </form>
+    {% endfor %}
+{% endblock %}
