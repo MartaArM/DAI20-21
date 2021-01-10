@@ -20,16 +20,44 @@
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
             <a class="nav-link" href="{% url 'index'%}"">DAI 20-21<span class="sr-only">(current)</span></a>
-          </li>
-          <li>
-            {% if user.is_authenticated %}
-            <p>Welcome {{ user.username }} !!!</p>
-            {% endif %}
-            </li>
-        </ul>
-        
-
+          </li>        </ul>
       </div>
+      {% if user.is_authenticated %}
+      <div id='bienvenidx'> Bienvenid@, {{ user.username }} {{ user.group }} </div>
+      <div>
+        <form method="post" action="{% url 'account_logout' %}">
+          {% csrf_token %}
+          {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}"
+                 value="{{ redirect_field_value }}"/>
+          {% endif %}
+          <button type="submit" class="btn btn-primary">Cerrar sesión</button>
+      </form>
+      </div>
+      {% else %}
+      <div>
+       <form method="post" action="{% url 'account_login' %}">
+          {% csrf_token %}
+          {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}"
+                 value="{{ redirect_field_value }}"/>
+          {% endif %}
+          <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+      </form>
+      </div>
+      <div>      <form method="post" action="{% url 'account_signup' %}">
+          {% csrf_token %}
+          {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}"
+                 value="{{ redirect_field_value }}"/>
+          {% endif %}
+          <button type="submit" class="btn btn-primary">Registrarse</button>
+      </form>
+      </div>
+
+      
+      {% endif %}
+
     </nav>
     <!-- Fin barra de navegación -->
     <!-- Menú lateral -->

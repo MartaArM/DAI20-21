@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 class Libro(models.Model):
 	id = models.IntegerField(primary_key=True)
@@ -14,5 +15,5 @@ class Prestamo(models.Model):
 	id = models.IntegerField(primary_key=True)
 	libro   = models.ForeignKey(Libro, on_delete=models.CASCADE)
 	fecha   = models.DateField(default=timezone.now)
-	usuario = models.CharField(max_length=100)
+	usuario = models.ForeignKey(User, on_delete=models.CASCADE)
 

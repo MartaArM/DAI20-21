@@ -1,24 +1,29 @@
-{% extends "base.html" %}
+{% extends "base1.html" %}
 {% load static %}
 {% block content %}
-<h2>Nuevo libro</h2>
+<h2>Nuevo prestamo</h2>
+{% if user.is_authenticated %}
 <form method="POST" action="/prestamos/add" class="search_form post-form add_libros">{% csrf_token %}
-	<div class="form-group">
+    <div class="form-group">
     <label for="exampleInputEmail1">Libro</label>
     <br/>
-    	{{ form.libro }}
+        {{ form.libro }}
         
-	</div>
-	<div class="form-group">
+    </div>
+    <div class="form-group">
     <label for="exampleInputEmail1">Fecha</label>
     <br/>
-    	{{ form.fecha }}
-	</div>
-	<div class="form-group">
+        {{ form.fecha }}
+    </div>
+    <div class="form-group">
     <label for="exampleInputEmail1">Usuario</label>
     <br/>
-    	{{ form.usuario }}
-	</div>
+        {{ form.usuario }}
+    </div>
     <button type="submit" class="btn btn-primary">Guardar</button>
 </form>
+{% else %}
+<p>No puedes añadir un préstamo porque no estás registrado. <a href="{% url 'account_login' %}">Inicia sesión</a></p>
+
+{% endif %}
 {% endblock %}
