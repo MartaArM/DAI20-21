@@ -1,9 +1,12 @@
-{% extends "base.html" %}
+{% extends "base1.html" %}
 {% load static %}
 {% block content %}
 <h2>Editar libro</h2>
+{% if user.is_authenticated %}
+    {% if user.is_staff %}
+    <br/>   
+
 {% for libro in libros %}
-   <br/>   
    <form class="edit_form" method="post" action="edit_form">
         <input type="text" name="libro" value="{{ libro.id }}" hidden></input>
         <ul class="list-group">
@@ -14,5 +17,13 @@
 
         <button type="submit" class="btn btn-primary">Editar</button>
     </form>
-    {% endfor %}
+{% endfor %}
+    {% else %}
+    <p>No perteneces al grupo <i>staff</i>. No puedes editar libros.</p>
+    {% endif %}
+{% else %}
+    <p>No puedes editar un libro porque no estás registrado. <a href="{% url 'account_login' %}">Inicia sesión</a></p>
+{% endif %}
+   
+    
 {% endblock %}

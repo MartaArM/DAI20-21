@@ -23,7 +23,7 @@
           </li>        </ul>
       </div>
       {% if user.is_authenticated %}
-      <div id='bienvenidx'> Bienvenid@, {{ user.username }} {{ user.group }} </div>
+      <div id='bienvenidx'> Bienvenid@, {{ user.username }} </div>
       <div>
         <form method="post" action="{% url 'account_logout' %}">
           {% csrf_token %}
